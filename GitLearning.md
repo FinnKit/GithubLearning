@@ -1,6 +1,7 @@
 # Git笔记
 参考视频：https://www.bilibili.com/video/BV1Xx411m7kn?p=1
 参考yezhaodan的github：https://github.com/yezhaodan/-Git
+
 ## 基本概念
 `Repository` 仓库，用于存放项目代码，每个项目对一个仓库
 `Fork` 复制克隆项目，该fork的项目是独立存在的
@@ -60,12 +61,65 @@
 2.	暂存区 暂存已经修改的文件最后统一提交到Git仓库中
 3.	工作区（Working Directory）添加、编辑、修改文件等动作
 
-通过命令方式将文件在三个区中进行传递
+### 本地上传Git仓库的流程
+所用到的命令可以见后介绍
+
+0. git用户配置
+在指定路径下打开git bash，进行用户配置（主要配置用户名与邮箱）
+
+```git
+git config --global user.name '这里填写自己的用户名'
+git config --global user.email '这里填写自己的用户名邮箱'
+git config --list
+```
+
+1. 关联远程库：
+使用git clone 命令，与github上远程仓库进行关联（实际上也是就是将远程仓库同步到本地上），主要是可以在仓库名的文件夹内存在已经配置过的.git目录。
+注意这里采用远程仓库链接为https
+
+	git clone https://github.com/FinnKit/GithubLearning.git
+<img src="images/gitclone.png" alt="gitclone" style="zoom:80%;" />
+
+2. 利用git命令对文件进行更新上传到git仓库中：
+将更新后的文件或文件夹从工作区中上传到暂存区中（git add xxx），利用git status查看该路径下状态，若上传到暂存区中成功，则显示有new file：xxx；将其上传到git仓库中（git commit -m '提交描述'），查看状态，若成功，则显示相关内容被更改。
+这里以一个空的txt文件作为Demo，新建并编辑了test.txt文件
+
+	cd GithubLearning 
+	vi test.txt
+	git add test.txt
+> 注意：这里会出现警告
+<img src="images\LF.png" alt="LF_CRLF" style="zoom:80%;" />
+需要参考 https://blog.csdn.net/qi_sheng_/article/details/107027468 
+> 更改Windows配置，避免不同操作系统协作时造成冲突
+
+	git status
+	git commit -m 'add a test.txt'
+<img src="images\gitAdd.png" alt="gitAdd" style="zoom: 80%;" />
+
+4. 将git仓库上传到远程仓库中
+一般网络正常情况下，直接使用`git push https仓库网址`即可。但可能由于网络问题，无法进行上传
+
+> 因此需要参考https://blog.csdn.net/qq_36667170/article/details/79094257
+进行github的SSH配置，将本地的服务器的ssh码绑定到github中，利用git push SSH仓库链接进行上传
+
+	git push git@github.com:FinnKit/GithubLearning.git
+<img src="images\gitPush.png" alt="gitPush" style="zoom:80%;" />
+
+<img src="images\githubPR.png" alt="githubPR" style="zoom:80%;" />
+
+以上就可利用本地git命令来迭代项目代码了
+
 ### 一些Linux的命令
 `pwd` ：查看当前路径
 `cd` ：进入路径
 `ls` ：列写该路径下所有文件
+`touch 文件名` ：直接新建一个文件
+`vi 文件名` ：新建一个文件，同时进入编辑模式（这里参考https://blog.csdn.net/huang100qi/article/details/80914597 ，注意这里在命令模式下，输入`:x`保存并退出编辑）
 `rm -f 文件名` ：强制删除文件
+注意：git bush中复制与粘贴的不是ctrl C/V，而是
+`Ctrl + insert`  复制
+`shift + insert`  粘贴
+
 ### 一些需要记住git的命令	
 - git status：确定文件当前所处Git工作区域；
 
@@ -155,7 +209,7 @@ git clone 仓库地址
 
 > 注意：主要是为了获取远程仓库地址，仓库地址在clone or download按钮下取得
 
-2.	进行文件增删改查，并工作区转入暂存区，再转入本地的g 仓库中
+2.	进行文件增删改查，并工作区转入暂存区，再转入本地的git仓库中
 3.	将本地仓库同步到远程仓库中
 使用命令：`git push`
 
@@ -192,3 +246,11 @@ https://用户名.github.io/仓库名
 3.	新建站点基础信息设置
 4.	选择主题
 5.	生成网页
+
+## 利用gitKraken迭代项目代码
+
+详细操作可见https://www.bilibili.com/video/BV1bK4y1t7CD?from=search&seid=2460516559044045181
+
+相关gitKraken6.5.1版本在保存在百度云中
+
+注意在使用旧版本时，需要将Update.exe禁止运行，禁止联网
